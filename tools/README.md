@@ -1,5 +1,18 @@
 # Tools
 
+## Figure Sourcing (search-first; draft is text-only)
+
+| Tool | Purpose | Example |
+|------|---------|---------|
+| `figure_search.py search` | Search openly-licensed sources (Commons/Openverse), license-filtered | `python tools/figure_search.py search --query "large intestine anatomy" --limit 6` |
+| `figure_search.py fetch` | Download a chosen image via the egress proxy | `python tools/figure_search.py fetch --url <thumb_url> --out assets/<deck>/x.png` |
+| `figure_search.py db-add / db / db-credits` | Per-deck figure database with provenance + credit lines | `python tools/figure_search.py db-credits --db assets/<deck>/figures_db.json --latex` |
+| `figure_search.py sources --ping` | List sources; auto-disable unreachable with `--disable-unreachable` | `python tools/figure_search.py sources --ping` |
+
+Sources are configured in `tools/figure_sources.json` (enable/disable). Only PD/CC0/CC-BY/CC-BY-SA
+are returned; copyrighted paper figures are never embedded — cite/link them. See the create skill's
+`references/images/external-figures-licensing.md`.
+
 ## Layout Analysis & Optimization
 
 | Tool | Purpose | Example |

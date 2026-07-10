@@ -44,6 +44,7 @@ reviewing the handoff between waves.
 3. Set exactly one mode: `passive-study`, `active-socratic`, or `academic-presentation`.
 4. Load the selected mode reference and [references/validation/mode-gates.md](references/validation/mode-gates.md).
 5. If a PDF or source document is provided, load [references/images/source-document-first.md](references/images/source-document-first.md) and extract figures before web search.
+6. **Default to English.** You reason and draft in English; confirm the **target language** in the interview. A non-English deck is produced by translating the finished English deck — see [Language Policy](#language-policy). Load [references/writing/en-technical-style.md](references/writing/en-technical-style.md) before drafting English prose.
 
 ## Mode Routing
 
@@ -60,22 +61,44 @@ Compatibility aliases:
 
 Every structure plan must state the selected mode, loaded references, and mode-specific acceptance gates.
 
-## Chinese (CJK) Deck Creation
+## Language Policy
 
-When the user requests a Chinese deck ("中文", "Chinese version"):
+**English is the default, and the language you reason and draft in.** You author best in
+English, so the canonical draft — outline, prose, takeaways, figure labels — is always written
+and verified in English first, following
+[references/writing/en-technical-style.md](references/writing/en-technical-style.md).
+**Do not think or draft directly in a non-English language;** your non-English instinct
+produces calques. A non-English deck is a *governed translation* of the finished English one.
 
-1. **Fonts are auto-detected.** font-config (Priority 1.5) checks for `.fonts/SourceHanSerifSC-Medium.otf`. If present, the deck uses Source Han Serif SC Medium+Bold — no preamble override needed. If absent, it falls back to the system Noto Sans CJK (which is thinner, acceptable but not optimal for slides).
+**Ask the target language in the Interview Gate (default English).** If the user wants a
+non-English deck (e.g. Chinese), produce it like this — never by drafting in that language:
 
-2. **Chinese math-glyph pairing.** KpMath (the template default) pairs well with Source Han Serif SC because both are serif fonts with similar weight. No special math font override is needed for Chinese decks.
+1. Build and fully QA the **English** deck first (compile, validate, visual-check, review).
+2. Run the **TRANSLATE pass** (Phase 6): translate the verified English `.tex` into the target
+   language under that language's technical-style reference. Change **only natural-language
+   strings** (frame titles, prose, bullets, `\TL*` block text, TikZ labels/captions). Keep all
+   math, `\TL*` macro names, and TikZ structure/coordinates byte-identical.
+3. **Re-run the full Quality Gate** on the translated deck — language length changes layout.
 
-3. **Figure labels.** Translate TikZ node labels, axis annotations, and caption text. Keep math expressions in LaTeX math mode (unchanged).
+### Chinese target — translation-pass specifics
 
-4. **Label localization.** The only hardcoded English UI string is `\TLtakeaway`'s "Key Takeaway." — override it:
+Load and obey [references/writing/zh-technical-style.md](references/writing/zh-technical-style.md)
+(译意不译词; the anti-翻译腔/calque tables — the sentence skeleton must be natural Chinese). Plus
+the mechanical steps:
+
+1. **Fonts auto-detected.** font-config (Priority 1.5) checks `.fonts/SourceHanSerifSC-Medium.otf`
+   (Source Han Serif SC Medium+Bold); else system Noto Sans CJK (thinner). KpMath pairs fine — no
+   math-font override needed.
+2. **Localize `\TLtakeaway`.** Override its hardcoded "Key Takeaway." → "要点。":
    ```latex
    \renewcommand{\TLtakeaway}[1]{...\textbf{要点。} #1...}
    ```
-
-5. **Validator keywords.** The `validate_deck.py` Socratic gates match English keywords ("question", "attempt", "hint", "reflection"). Add bilingual glosses to the "how to use this deck" frame so the automated check passes with Chinese content.
+3. **Translate TikZ node labels, axis annotations, captions.** Keep math in LaTeX math mode unchanged.
+4. **Validator bilingual glosses.** `validate_deck.py` matches English keywords (notation / exercise /
+   reference; Socratic question / attempt / hint / reflection). Keep bilingual titles — e.g.
+   「符号表 (Notation)」「习题 (Exercises)」「参考文献 (References)」 — so the gates still pass.
+5. **Re-check overflow.** Chinese is usually *shorter* than English, so frames that fit in English
+   normally still fit — but re-run the Quality Gate; on any Overfull, split, never shrink.
 
 ## Pipeline
 
@@ -93,9 +116,15 @@ Phase 3+4: DRAFT+FIGURES    -> write batches; each figure-needing slide emits an
                           ┌─ WAVE 3: POLISH ────────────────────────────────┐
 Phase 5: QUALITY LOOP       -> compile, validate, visual-check, review, fix
                           └─────────────────────────────────────────────────┘
+            >>> if target language ≠ English: run Phase 6, then re-run Wave 3 <<<
+                          ┌─ WAVE 4: TRANSLATE (conditional) ───────────────┐
+Phase 6: TRANSLATE          -> translate the verified English .tex into the target
+                               language under that language's technical-style reference
+                               (strings only; math/macros/TikZ unchanged); re-run Quality Gate
+                          └─────────────────────────────────────────────────┘
 ```
 
-Phases 3 and 4 are **one wave**: decide a slide's figure while you draft it, not in a separate pass. Do not skip phases. For detailed guidance, load [references/workflows/full-create-guide.md](references/workflows/full-create-guide.md).
+Phases 3 and 4 are **one wave**: decide a slide's figure while you draft it, not in a separate pass. Do not skip phases. **Phase 6 runs only for non-English targets** and always on top of a fully verified English deck (see [Language Policy](#language-policy)). For detailed guidance, load [references/workflows/full-create-guide.md](references/workflows/full-create-guide.md).
 
 ## Material Analysis
 
@@ -117,6 +146,7 @@ If papers/materials are provided:
 ## Interview Gate
 
 Ask only what cannot be inferred safely:
+- **Target language** (default **English**). Ask interactively (e.g. via `AskUserQuestion`). If the user picks a non-English language, note that the deck will be drafted in English and then translated (Phase 6) — see [Language Policy](#language-policy).
 - Duration or target effort budget.
 - Audience/learner level and prior field exposure.
 - Mode confirmation when ambiguous.
@@ -136,6 +166,7 @@ scaffolding obligations. **Governing tenet:** for applied readers (P1/P4), proof
 
 Before drafting, present a plan containing:
 - Selected mode and loaded references.
+- **Target language** and, if non-English, a note that the deck is drafted in English then translated (Phase 6).
 - Section list with slide counts.
 - Per-section learning objective or narrative purpose.
 - Planned figures, tables, TikZ diagrams, or source images.
@@ -167,6 +198,17 @@ Mode-specific writing:
 - `active-socratic`: one central question/task per learning frame, staged hints, learner attempts before answers.
 - `academic-presentation`: telegraphic prompts, time-aware pacing, references before Thank You, backup slides after `\appendix`.
 
+**Language prose style** — you always draft in **English** first (see [Language Policy](#language-policy)):
+- **English (the draft you write)** → [references/writing/en-technical-style.md](references/writing/en-technical-style.md):
+  one relationship per line, every line advances, define-on-first-use, mechanism before formula,
+  equations as evidence, plain register, payoff-first titles, takeaway = one new consequence.
+- **Non-English target** → produced by the Phase 6 **translation pass** on the verified English
+  deck, not by drafting in that language. For Chinese, the pass obeys
+  [references/writing/zh-technical-style.md](references/writing/zh-technical-style.md)
+  (译意不译词 / anti-翻译腔). Note the length flip: English runs ~30% longer than Chinese, so the
+  English draft is the tight one; a translation rarely overflows, but re-run the gate and **split,
+  never shrink** if it does.
+
 ## Figures And Layout (merged into drafting — Wave 2)
 
 Figures are resolved **while drafting**, not in a separate pass. When a slide
@@ -180,10 +222,41 @@ python tools/image_index.py request-resolve --request <id> --image <imgid> --sta
 Source-document-first precedence (see [references/images/image-index.md](references/images/image-index.md)):
 1. Indexed source figure (matched via `query`).
 2. Rendered/cropped source page region.
-3. Local TikZ, pgfplots, or redrawn figure (prefer this over a low-confidence match).
-4. External image only as a local, attributed fallback (record `provenance`).
+3. Local TikZ/pgfplots **only when you can get the geometry right** — a wrong schematic is worse than none on a rigorous deck. For things easy to mis-draw (3-D surfaces, real curvature, circle packings), prefer (4).
+4. An **openly-licensed** external image (public domain / CC0 / CC BY), downloaded locally, credited on-slide, with provenance recorded. **Never embed a copyrighted paper/journal figure — cite/link it instead.** Full discipline (Commons API workflow, license table, credits ledger, height-bounded inclusion): [references/images/external-figures-licensing.md](references/images/external-figures-licensing.md).
 
 For image-heavy slides, run `python tools/layout_optimizer.py suggest --img W:H --cards N`. Use [autobeamer-layout](../autobeamer-layout/SKILL.md) for layout and [autobeamer-tikz](../autobeamer-tikz/SKILL.md) for diagrams. Leave no image request `open`.
+
+### Figure proposal & external figure database (search-first; draft is text-only)
+
+The draft is **pure text**; figures are proposed, sourced, and inserted around it via
+`tools/figure_search.py` (Commons/Openverse, license-filtered, dependency-free) and a per-deck
+**figure DB** `assets/<deck>/figures_db.json`. Sources live in `tools/figure_sources.json`
+(enable/disable; `sources --ping --disable-unreachable` drops dead ones).
+
+1. **STATIC (Wave 1, during planning):** for each *planned* figure in the structure plan, search
+   the openly-licensed sources and record candidates in the figure DB **before drafting**:
+   ```bash
+   python tools/figure_search.py sources --ping
+   python tools/figure_search.py search --query "<key idea>" --limit 6      # Commons + Openverse
+   python tools/figure_search.py db-add --db assets/<deck>/figures_db.json --status candidate ...
+   ```
+2. **DYNAMIC (Wave 2, while drafting text):** the draft only emits image *requests* (`<slide, need>`)
+   — no figures yet. When a new need appears, search again and add fresh candidates to the same DB.
+3. **INSERT (Wave 3, after the text is done):** adopt one candidate per slot, fetch it, embed,
+   credit, and verify:
+   ```bash
+   python tools/figure_search.py fetch --url <thumb_url> --out assets/<deck>/<name>.png
+   magick assets/<deck>/<name>_orig.png -trim +repage -bordercolor white -border 12 assets/<deck>/<name>.png
+   python tools/figure_search.py db-add --db assets/<deck>/figures_db.json --status adopted ... --slide "<title>"
+   python tools/figure_search.py db-credits --db assets/<deck>/figures_db.json --latex   # on-slide credit lines
+   ```
+   Bound the image by `height=` (not width), render the page, and **visually verify** it. A sourced
+   figure is checked the same way TikZ is. Full discipline + the vetted source table:
+   [references/images/external-figures-licensing.md](references/images/external-figures-licensing.md).
+
+**Search first, TikZ last.** Only draw TikZ when the search genuinely fails, and then the
+render + self + Codex visual double-check is mandatory (autobeamer-tikz Rule 0).
 
 ## Quality Gate
 
@@ -197,16 +270,30 @@ python tools/check_layout.py deck.tex build/deck.log --advise
 **Between Wave 2 and Wave 3** the leader runs the [alignment check](references/validation/alignment-check.md): does the draft still match the plan and the original demands (sections, objectives, planned figures, every image request resolved, mode fidelity)? On drift, return to the Drafter before polishing.
 
 Before delivery (Wave 3):
-- Compile with XeLaTeX; confirm zero `Overfull \vbox`.
+- Compile with XeLaTeX; confirm zero `Overfull \vbox` (split or scale a *figure*, never shrink body text).
 - Run static validation and layout audit.
-- Run [autobeamer-validate](../autobeamer-validate/SKILL.md) `visual-check` on the PDF, especially every frame with blocks.
+- Run [autobeamer-validate](../autobeamer-validate/SKILL.md) `visual-check` on the PDF, especially every frame with blocks and every embedded figure.
 - Use [autobeamer-review](../autobeamer-review/SKILL.md) with the matching mode rubric.
+
+**Role-simulation review is a HARD gate, not optional** (for any teaching/publishable deck):
+- Run [autobeamer-review](../autobeamer-review/SKILL.md) `excellence` (Content Expert · Design Reviewer · Audience Advocate) **and** `devils-advocate` **and** `pedagogy`, then **fix what they find before declaring done.** Mechanical gates (compile/validate/overflow) judge *format*; only this gate judges *whether it teaches*.
+- For substantial decks, run the perspectives as **parallel subagents** (a council), and include an **independent voice** (a different model via `codex:codex-rescue`). The skill's default is solo-in-one-pass; escalate to the council whenever the deck matters or the user asks.
+- **Run the council on the PLAN/storyboard first, before drafting** — catching a bad spine is far cheaper than catching N bad slides. A converged council critique of the question-spine is the highest-leverage check in the whole pipeline.
+
+**Publishable / educational-grade gate** (apply when the deck must be shippable):
+- **Figures:** every non-original figure is openly licensed (PD / CC0 / CC BY), downloaded locally, credited on-slide **and** in `assets/<deck>/CREDITS.md`, and visually verified to render uncropped. No copyrighted paper/journal figures. See [references/images/external-figures-licensing.md](references/images/external-figures-licensing.md).
+- **Rigor:** every theorem is proven in-deck **or** carries a working citation link — no hand-wavy sketches passed off as proofs. See [references/writing/rigor-and-citations.md](references/writing/rigor-and-citations.md).
+- **Links:** every external URL returns HTTP 200 — verify by `curl --proxy http://127.0.0.1:8888 -o /dev/null -w '%{http_code}'` before shipping; never ship an unverified or fabricated link.
 
 ## Reference Index
 
 | Need | Reference |
 |------|-----------|
 | Full creation workflow | [references/workflows/full-create-guide.md](references/workflows/full-create-guide.md) |
+| English prose style (the draft you write) | [references/writing/en-technical-style.md](references/writing/en-technical-style.md) |
+| Chinese technical style (En→Zh translate pass) | [references/writing/zh-technical-style.md](references/writing/zh-technical-style.md) |
+| Rigor & citations (theorem decks: prove-or-link) | [references/writing/rigor-and-citations.md](references/writing/rigor-and-citations.md) |
+| External figures — licensing & sourcing | [references/images/external-figures-licensing.md](references/images/external-figures-licensing.md) |
 | Passive-study mode | [references/modes/passive-study.md](references/modes/passive-study.md) |
 | Active-Socratic mode | [references/modes/active-socratic.md](references/modes/active-socratic.md) |
 | Academic-presentation reference | [references/modes/academic-presentation.md](references/modes/academic-presentation.md) |

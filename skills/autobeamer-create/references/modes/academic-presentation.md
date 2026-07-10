@@ -6,6 +6,11 @@ Use `academic-presentation` for live talks, seminars, defenses, journal clubs, a
 
 The deck supports a speaker in a time-bounded room. It should make the audience care quickly, communicate the contribution with enough evidence to be credible, and leave a clear path for questions.
 
+> **English decks:** also load [../writing/en-technical-style.md](../writing/en-technical-style.md) —
+> payoff-first titles, one relationship per line, plain register, captions/equations as
+> evidence. Telegraphic here, but each line still advances and lands its point on the stress
+> position.
+
 ## Authoring Rules
 
 - Optimize for audience, time, and one recoverable narrative thread.

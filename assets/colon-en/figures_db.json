@@ -1,0 +1,60 @@
+{
+  "figures": [
+    {
+      "id": "fig-001",
+      "query": "gaussian curvature surfaces",
+      "source": "wikimedia_commons",
+      "title": "Gaussian curvature",
+      "author": "Nicoguaro",
+      "license": "cc0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Gaussian_curvature.svg",
+      "local_path": "assets/colon-en/gaussian_curvature.png",
+      "slide": "Q2 principal curvatures",
+      "status": "adopted",
+      "retrieved": "2026-06-25"
+    },
+    {
+      "id": "fig-002",
+      "query": "large intestine anatomy",
+      "source": "wikimedia_commons",
+      "title": "Colon (anatomy)",
+      "author": "Mikael Haggstrom, M.D.",
+      "license": "pd",
+      "license_url": "",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Colon_(anatomy).svg",
+      "local_path": "assets/colon-en/colon_anatomy.png",
+      "slide": "Q1 failed experiment",
+      "status": "adopted",
+      "retrieved": "2026-06-25"
+    },
+    {
+      "id": "fig-003",
+      "query": "conformal map grid",
+      "source": "wikimedia_commons",
+      "title": "Conformal map",
+      "author": "Oleg Alexandrov",
+      "license": "pd",
+      "license_url": "",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Conformal_map.svg",
+      "local_path": "assets/colon-en/conformal_map.png",
+      "slide": "Q3 conformal",
+      "status": "adopted",
+      "retrieved": "2026-06-25"
+    },
+    {
+      "id": "fig-004",
+      "query": "triangle mesh delaunay",
+      "source": "wikimedia_commons",
+      "title": "Delaunay Triangulation (50 Points)",
+      "author": "Inductiveload",
+      "license": "pd",
+      "license_url": "",
+      "file_page": "https://commons.wikimedia.org/wiki/File:Delaunay_Triangulation_(50_Points).svg",
+      "local_path": "assets/colon-en/delaunay_mesh.png",
+      "slide": "Q4 discretize",
+      "status": "adopted",
+      "retrieved": "2026-06-25"
+    }
+  ]
+}

@@ -6,6 +6,16 @@ Use `passive-study` when the deck itself must teach comprehensively. The target 
 
 The deck is a generous teacher. It shields the learner from avoidable frustration by explaining background before it becomes a blocker, while still preserving rigor and intellectual taste.
 
+> **English decks:** also load [../writing/en-technical-style.md](../writing/en-technical-style.md) —
+> one relationship per line, define-on-first-use, mechanism before formula, equations as
+> evidence, takeaway = one new consequence. English runs longer than Chinese; edit tighter,
+> then split (never shrink).
+>
+> **Rigorous / theorem decks:** load [../writing/rigor-and-citations.md](../writing/rigor-and-citations.md) —
+> prove the special case the deck uses in full; cite deep theorems with a verified link
+> (never a hand-wavy sketch). For figures that are easy to mis-draw, source an openly-licensed
+> one ([../images/external-figures-licensing.md](../images/external-figures-licensing.md)) instead of shipping a wrong TikZ.
+
 ## Authoring Rules
 
 - Make the material self-contained: define prerequisites, notation, and domain conventions before relying on them.

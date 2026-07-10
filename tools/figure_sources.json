@@ -1,0 +1,49 @@
+{
+  "proxy": "http://127.0.0.1:8888",
+  "user_agent": "autobeamer-figuresearch/1.0 (educational deck building)",
+  "allowed_licenses": ["pd", "cc0", "by", "by-sa"],
+  "sources": [
+    {
+      "name": "wikimedia_commons",
+      "kind": "commons",
+      "enabled": true,
+      "api": "https://commons.wikimedia.org/w/api.php",
+      "note": "best for math/geometry/3D/science/anatomy; PD/CC0/CC-BY/CC-BY-SA per file; has API"
+    },
+    {
+      "name": "openverse",
+      "kind": "openverse",
+      "enabled": true,
+      "api": "https://api.openverse.org/v1/images/",
+      "note": "CC meta-search aggregator (800M+); programmatic"
+    },
+    {
+      "name": "servier_smart",
+      "kind": "web",
+      "enabled": false,
+      "url": "https://smart.servier.com",
+      "note": "CC BY 4.0 medical/anatomy (3000+). No clean public API -> disabled; browse, or find Servier uploads mirrored on Wikimedia Commons"
+    },
+    {
+      "name": "nih_bioart",
+      "kind": "web",
+      "enabled": false,
+      "url": "https://bioart.niaid.nih.gov",
+      "note": "NIH biomedical art; browse. Disabled (no wired API)"
+    },
+    {
+      "name": "smithsonian_openaccess",
+      "kind": "web",
+      "enabled": false,
+      "url": "https://www.si.edu/openaccess",
+      "note": "CC0; API at api.si.edu needs a free key. Disabled until key configured"
+    },
+    {
+      "name": "nasa_images",
+      "kind": "web",
+      "enabled": false,
+      "url": "https://images.nasa.gov",
+      "note": "public domain (US); API at images-api.nasa.gov. Disabled (not wired)"
+    }
+  ]
+}

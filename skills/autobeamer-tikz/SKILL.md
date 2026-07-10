@@ -63,6 +63,30 @@ Never use `very thick` — it looks heavy on projected slides.
 
 NEVER hardcode y-coordinates that should lie on a plotted curve. ALL coordinates for markers, dashed-line endpoints, and intersections MUST be computed via `\pgfmathsetmacro` from the SAME function used to draw the curve.
 
+### Rule 0: Search for a real figure first — TikZ is the fallback
+
+TikZ renders mathematical figures poorly, and a schematic that *misrepresents the math* is worse
+than no figure. So the standing rule is **search first, draw last**:
+
+- **Search the vetted openly-licensed sources first** (Wikimedia Commons, Openverse, Servier
+  Medical Art for anatomy, NASA/Smithsonian, BioIcons/SciDraw, …) — full list + licenses +
+  workflow in the create skill's
+  [external-figures-licensing.md](../autobeamer-create/references/images/external-figures-licensing.md).
+  A real, correct, openly-licensed figure (downloaded + credited) beats a hand drawing for
+  **3-D surfaces, real curvature, saddles, circle packings, conformal grids, Ricci-flow
+  snapshots, anatomy** — anything easy to fake and easy to get wrong.
+- **Only if search truly fails**, reserve TikZ for what it does well: flowcharts, labelled
+  triangles/meshes, 2-D schematics, computed function plots.
+
+**If you do draw TikZ, the render + double visual-check is MANDATORY (no exceptions):**
+1. Render the page to PNG (`pdftoppm -png -r 150 -f N -l N build/deck.pdf out`).
+2. **Self visual-check** the pixels: perpendiculars actually perpendicular, markers on their
+   curves (coordinates `\pgfmathsetmacro`-computed, never hardcoded), labels on the right objects,
+   nothing clipped.
+3. **Codex cross-check** via `codex:codex-rescue`: hand it the TikZ source (and PNG if available)
+   to find geometric/math errors a second pair of eyes catches.
+4. Fix and re-render until both checks pass — or go back and search harder for a real figure.
+
 ### ❌ WRONG — Hardcoded
 
 ```latex
